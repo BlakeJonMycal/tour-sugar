@@ -1,3 +1,57 @@
+import { getVenues, getBands, getBookings } from "./database.js";
+
+const venues = getVenues()
+const bookings = getBookings()
+const bands = getBands()
+
+document.addEventListener(
+    "click",
+    (clickEvent) => {
+        const itemClicked  = clickEvent.target  
+        if(itemClicked.dataset.type === "venues"){ 
+        const venueID  = itemClicked.dataset.venue_id
+        const venueName = itemClicked.dataset.name
+        let   bandId  = []
+        let bandNames = []
+            for (const booking of bookings) {
+                if(booking.venueId === parseInt(venueID)){
+                    bandId.push(booking.bandId)
+                }
+            }
+            for (const band of bands) {
+                if(bandId[0] === band.id){
+                    bandNames.push(band.name)
+                }
+                if(bandId[1] === band.id){
+                    bandNames.push(band.name)
+                }
+            }
+            window.alert(`booked: ${bandNames.join(", ")}`)
+    }
+}
+)
+export const Venues = () => {
+    let html = "<ul>"
+
+    for (const venue of venues) {
+        html += `<li
+            data-type="venues"
+            data-venue_id=${venue.id}
+            data-name=${venue.name}
+            >${venue.name}</li>`
+    }
+    html += "</ul>"
+    return html
+}
+
+
+
+
+
+
+
+
+
 /*
 display venue name in bulleted list
 

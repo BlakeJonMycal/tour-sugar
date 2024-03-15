@@ -1,6 +1,31 @@
-import { getBands } from "./database";
+import { getBands, getVenues, getBookings  } from "./database.js";
 
 const bands = getBands()
+const venues = getVenues()
+const bookings = getBookings()
+
+document.addEventListener(
+    "click",
+    (clickEvent) => {
+        const itemClicked = clickEvent.target
+        if (itemClicked.dataset.type === "bands") {
+            const bandID = itemClicked.dataset.band_id
+        let venueName = ""
+        let venueId = ""
+                for (const booking of bookings) {
+                    if(booking.bandId === parseInt(bandID)){
+                        venueId += booking.venueId
+                    }
+                }
+                for (const venue of venues) {
+                    if(parseInt(venueId) === venue.id){
+                        venueName += venue.name
+                    }
+                }
+                window.alert(`Playing: ${venueName}`)
+            } 
+        }
+) 
 
 export const Bands = () => {
     let html = "<ul>"
@@ -9,6 +34,7 @@ for (const band of bands) {
     html += `<li
             data-type="bands"
             data-band_id=${band.id}
+            data-band_name=${band.name}
             >${band.name}</li>`
 }
     html += "</ul>"
